@@ -24,10 +24,13 @@ class INCEPTION():
     """
     
     DEFAULTS={
-           "batch_size": 128,
+           "batch_size": 64,
            "dropout": 0.8,
            "learning_rate":1E-3
     } 
+
+    MAX_ITER = 1000
+    MAX_EPOCHS = 1000
     
     RESTORE_KEY = "cnn_to_restore"
    
@@ -139,7 +142,7 @@ class INCEPTION():
         feed_dict={self.x_in:x, self.is_train: train_status}
         return self.sesh.run(self.pred, feed_dict=feed_dict)
     
-    def train(self, X, max_iter=np.inf, max_epochs=np.inf,cross_validate=True,
+    def train(self, X, max_iter=MAX_ITER, max_epochs=MAX_EPOCHS,cross_validate=True,
               verbose=True, save=True, outdir="./out"):
         
         if save:
@@ -178,12 +181,12 @@ class INCEPTION():
                     #self.logger.add_run_metadata(run_metadata, 'step%d' % i)
                 err_train += cost
                 
-                if i%1000 == 0 and verbose:
+                if i%100 == 0 and verbose:
                     #print("round {} --> avg cost: ".format(i), err_train / i, flush=True)
                     print("round {} --> cost: ".format(i), cost, flush=True)
                     
                 
-                if i%1000 == 0 and verbose:# and i >= 10000:
+                if i%100 == 0 and verbose:# and i >= 10000:
                     
                     if cross_validate:
                         x, y = X.validation.next_batch(self.batch_size)

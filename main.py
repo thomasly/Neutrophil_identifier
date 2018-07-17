@@ -25,13 +25,13 @@ INPUT_DIM = [IMG_DIM**2*3, # Default input for INCEPTION_V3 network, 299*299*3
                
 
 HYPERPARAMS = {
-    "batch_size": 1,
+    "batch_size": 64,
     "dropout": 0.8,
-    "learning_rate": 1E-4
+    "learning_rate": 1E-2
 }
 
-MAX_ITER = 2**16
-MAX_EPOCHS = np.inf
+MAX_ITER = 1000
+MAX_EPOCHS = 1000
 
 
 
