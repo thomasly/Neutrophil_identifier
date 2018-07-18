@@ -15,7 +15,8 @@ import tensorflow as tf
 import HE_data_input
 import cnn
 
-dirr = sys.argv[1]
+log_dir = "log"
+metagraph_dir = "metagraph"
 
 
 IMG_DIM = 299
@@ -35,8 +36,8 @@ MAX_EPOCHS = 1000
 
 
 
-LOG_DIR = "../Neutrophil/{}".format(dirr)
-METAGRAPH_DIR = "../Neutrophil/{}".format(dirr)
+LOG_DIR = "../Neutrophil_identifier/{}".format(log_dir)
+METAGRAPH_DIR = "../Neutrophil_identifier/{}".format(metagraph_dir)
 
 
 # to_load = 
