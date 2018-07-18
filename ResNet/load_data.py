@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image
 
 
-def load_data():
+def load_data(max_pos = 1000, max_neg = 1000):
 	"""
 	load pil image data into numpy arrays
 
@@ -37,16 +37,23 @@ def load_data():
 		neg_path = os.path.abspath('../neg') 
 
 	# open positive/negative images and transform them into np arrays
+	i = 0
 	for file in os.listdir(pos_path):
 		img_path = pos_path + os.sep + str(file)
 		img = Image.open(str(img_path))
 		pos_img.append(np.array(img))
+		i += 1
+		if i >= max_pos:
+			break
 
-
+	i = 0
 	for file in os.listdir(neg_path):
 		img_path = neg_path + os.sep + str(file)
 		img = Image.open(str(img_path))
 		neg_img.append(np.array(img))
+		i += 1
+		if i >= max_neg:
+			break
 
 	# remove the transparency channel
 	# add labels to the images
@@ -57,7 +64,7 @@ def load_data():
 
 	# combine positive and negative datasets
 	X = np.concatenate((pos_img, neg_img), axis=0)
-	Y = np.concatenate((pos_label, neg_label), axis=0)
+	Y = np.concatenate((pos_label, neg_label), axis=0).reshape((-1))
 	
 	# number of samples
 	n_X = X.shape[0]

@@ -1,2 +1,4 @@
+.DS_store
 *.png
 *.scn
+__pycache__
