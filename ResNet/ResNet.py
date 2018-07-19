@@ -220,39 +220,53 @@ def ResNet50(input_shape = (299, 299, 3), classes = 1):
     return model
 
 
-model = ResNet50(input_shape = (299, 299, 3), classes = 1)
+def main():
+    model = ResNet50(input_shape = (299, 299, 3), classes = 1)
 
 
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 
-X_train_orig, X_test_orig, Y_train_orig, Y_test_orig = ld.load_data(3000, 3000)
+    X_train_orig, X_test_orig, Y_train_orig, Y_test_orig = ld.load_data(500, 500)
 
-# Normalize image vectors
-X_train = X_train_orig/255.
-X_test = X_test_orig/255.
-Y_train = np.squeeze(Y_train_orig)
-Y_test = np.squeeze(Y_test_orig)
+    # Normalize image vectors
+    X_train = X_train_orig/255.
+    X_test = X_test_orig/255.
+    Y_train = np.squeeze(Y_train_orig)
+    Y_test = np.squeeze(Y_test_orig)
 
-# Convert training and test labels to one hot matrices
-# Y_train = convert_to_one_hot(Y_train_orig, 6).T
-# Y_test = convert_to_one_hot(Y_test_orig, 6).T
+    # Convert training and test labels to one hot matrices
+    # Y_train = convert_to_one_hot(Y_train_orig, 6).T
+    # Y_test = convert_to_one_hot(Y_test_orig, 6).T
 
-print ("number of training examples = " + str(X_train.shape[0]))
-print ("number of test examples = " + str(X_test.shape[0]))
-print ("X_train shape: " + str(X_train.shape))
-print ("Y_train shape: " + str(Y_train.shape))
-print ("X_test shape: " + str(X_test.shape))
-print ("Y_test shape: " + str(Y_test.shape))
-
-
-
-model.fit(X_train, Y_train, epochs = 20, batch_size = 32)
+    print ("number of training examples = " + str(X_train.shape[0]))
+    print ("number of test examples = " + str(X_test.shape[0]))
+    print ("X_train shape: " + str(X_train.shape))
+    print ("Y_train shape: " + str(Y_train.shape))
+    print ("X_test shape: " + str(X_test.shape))
+    print ("Y_test shape: " + str(Y_test.shape))
 
 
-preds = model.evaluate(X_test, Y_test)
-print ("Loss = " + str(preds[0]))
-print ("Test Accuracy = " + str(preds[1]))
+    # fit model
+    model.fit(X_train, Y_train, epochs = 20, batch_size = 32)
+
+    # test the model on test dataset
+    preds = model.evaluate(X_test, Y_test)
+    print ("Loss = " + str(preds[0]))
+    print ("Test Accuracy = " + str(preds[1]))
+
+    # save model and weights into files
+    model_to_json = model.to_json()
+    with open("resModel.json", "w") as f:
+        f.write(model_to_json)
+
+    model.save_weights("modelWeights.h5")
+
+    print("Model and weights saved.")
+
+    # print summary
+    model.summary()
 
 
-model.summary()
+if __name__ == '__main__':
+    main()
