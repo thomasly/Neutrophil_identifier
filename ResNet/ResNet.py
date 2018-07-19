@@ -248,7 +248,7 @@ def main():
 
 
     # fit model
-    model.fit(X_train, Y_train, epochs = 20, batch_size = 32)
+    model.fit(X_train, Y_train, epochs = 5, batch_size = 32)
 
     # test the model on test dataset
     preds = model.evaluate(X_test, Y_test)
