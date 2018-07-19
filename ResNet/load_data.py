@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image
 
 
-def load_data(max_pos = 1000, max_neg = 1000):
+def load_data(pos_path = None, neg_path = None, max_pos = 500, max_neg = 500):
 	"""
 	load pil image data into numpy arrays
 
@@ -25,15 +25,14 @@ def load_data(max_pos = 1000, max_neg = 1000):
 	test data labels as Y_test_orig
 	"""
 
-	pos_path = None
-	neg_path = None
 	pos_img = []
 	neg_img = []
 
 	# paths to positive/negative images
-	if os.path.exists('../pos'):
+	
+	if pos_path is None and os.path.exists('../pos'):
 		pos_path = os.path.abspath('../pos')
-	if os.path.exists('../neg'):
+	if neg_path is None and os.path.exists('../neg'):
 		neg_path = os.path.abspath('../neg') 
 
 	# open positive/negative images and transform them into np arrays
