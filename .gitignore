@@ -1,4 +1,5 @@
-.DS_Store
+*.DS_Store
 *.png
 *.scn
+*.pyc
 __pycache__
