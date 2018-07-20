@@ -49,7 +49,7 @@ def test_loaded_model():
 	model = load_model_from_json()
 	model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 	_, X_test, _, Y_test = ld.load_data(500, 500)
-	X_test = X_test / 255
+	X_test = X_test / 255.0
 	Y_test = squeeze(Y_test)
 
 	preds = model.evaluate(X_test, Y_test)

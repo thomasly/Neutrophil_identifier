@@ -30,7 +30,7 @@ def test_model(model, data_size):
 		test = True)
 
 	# normalize test dataset
-	X_test = X_test_orig / 255
+	X_test = X_test_orig / 255.0
 	Y_test = squeeze(Y_test_orig)
 	print("X_test shape: " + str(X_test.shape))
 	print("Y_test shape: " + str(Y_test.shape) + "\n")

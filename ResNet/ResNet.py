@@ -1,4 +1,3 @@
-
 # coding: utf-8
 
 # # Residual Networks
@@ -30,6 +29,9 @@ from keras.utils import plot_model
 # from resnets_utils import *
 from keras.initializers import glorot_uniform
 import scipy.misc
+import matplotlib
+matplotlib.use("TkAgg")
+import matplotlib.pyplot as plt
 # from matplotlib.pyplot import imshow
 # get_ipython().magic('matplotlib inline')
 
@@ -227,11 +229,11 @@ def main():
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 
-    X_train_orig, X_test_orig, Y_train_orig, Y_test_orig = ld.load_data(max_pos=100, max_neg=100)
+    X_train_orig, X_test_orig, Y_train_orig, Y_test_orig = ld.load_data(max_pos=10, max_neg=10)
 
     # Normalize image vectors
-    X_train = X_train_orig/255.
-    X_test = X_test_orig/255.
+    X_train = X_train_orig/255.0
+    X_test = X_test_orig/255.0
     Y_train = np.squeeze(Y_train_orig)
     Y_test = np.squeeze(Y_test_orig)
 
@@ -249,7 +251,7 @@ def main():
 
     # fit model
     model.fit(X_train, Y_train, epochs = 5, batch_size = 32)
-
+    
     # test the model on test dataset
     preds = model.evaluate(X_test, Y_test)
     print ("Loss = " + str(preds[0]))
