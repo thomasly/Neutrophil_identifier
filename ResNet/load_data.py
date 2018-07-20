@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image
 
 
-def load_data(pos_path = None, neg_path = None, max_pos = 500, max_neg = 500, test = False):
+def load_data(pos_path = None, neg_path = None, max_pos = 500, max_neg = 500, train_only = False, test = False):
 	"""
 	load pil image data into numpy arrays
 
@@ -74,23 +74,29 @@ def load_data(pos_path = None, neg_path = None, max_pos = 500, max_neg = 500, te
 	Y = Y[perm]
 
 	# determine the images number of test set
+	n_test = 0
 	if test:
 		n_test = np.int(n_X)
+	elif train_only:
+		n_test = 0
 	else:
 		n_test = np.int(n_X / 10)
-	# if test set number is less than 1 (total data number is less than 10)
-	# add 1 to test set
-	if n_test == 0:
-		n_test += 1
+		# if test set number is less than 1 (total data number is less than 10)
+		# add 1 to test set
+		if n_test == 0:
+			n_test += 1
 
 	# determine the number of training set
 	n_train = n_X - n_test
 	
 	# split data into training set and test set
 	X_train_orig = X[0:n_train]
-	X_test_orig = X[-n_test:]
 	Y_train_orig = Y[0:n_train]
-	Y_test_orig = Y[-n_test:]
+	X_test_orig = []
+	Y_test_orig = []
+	if not train_only:
+		X_test_orig = X[-n_test:]
+		Y_test_orig = Y[-n_test:]
 	
 
 	return X_train_orig, X_test_orig, Y_train_orig, Y_test_orig
