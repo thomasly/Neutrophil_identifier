@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image
 
 
-def load_data(pos_path = None, neg_path = None, max_pos = 500, max_neg = 500):
+def load_data(pos_path = None, neg_path = None, max_pos = 500, max_neg = 500, test = False):
 	"""
 	load pil image data into numpy arrays
 
@@ -63,7 +63,7 @@ def load_data(pos_path = None, neg_path = None, max_pos = 500, max_neg = 500):
 
 	# combine positive and negative datasets
 	X = np.concatenate((pos_img, neg_img), axis=0)
-	Y = np.concatenate((pos_label, neg_label), axis=0).reshape((-1))
+	Y = np.concatenate((pos_label, neg_label), axis=0)
 	
 	# number of samples
 	n_X = X.shape[0]
@@ -74,7 +74,10 @@ def load_data(pos_path = None, neg_path = None, max_pos = 500, max_neg = 500):
 	Y = Y[perm]
 
 	# determine the images number of test set
-	n_test = np.int(n_X / 10) * 2
+	if test:
+		n_test = np.int(n_X)
+	else:
+		n_test = np.int(n_X / 10)
 	# if test set number is less than 1 (total data number is less than 10)
 	# add 1 to test set
 	if n_test == 0:

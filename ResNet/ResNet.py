@@ -66,19 +66,19 @@ def identity_block(X, f, filters, stage, block):
     X_shortcut = X
     
     # First component of main path
-    X = Conv2D(filters = F1, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2a', kernel_initializer = glorot_uniform(seed=0))(X)
+    X = Conv2D(filters = F1, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2a', kernel_initializer = glorot_uniform())(X)
     X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
     X = Activation('relu')(X)
     
     ### START CODE HERE ###
     
     # Second component of main path (≈3 lines)
-    X = Conv2D(F2, (f, f), strides=(1,1), padding="same", name=conv_name_base+"2b", kernel_initializer=glorot_uniform(seed=0))(X)
+    X = Conv2D(F2, (f, f), strides=(1,1), padding="same", name=conv_name_base+"2b", kernel_initializer=glorot_uniform())(X)
     X = BatchNormalization(axis=3, name=bn_name_base + "2b")(X)
     X = Activation("relu")(X)
 
     # Third component of main path (≈2 lines)
-    X = Conv2D(F3, (1, 1), strides=(1,1), padding="valid", name=conv_name_base + "2c", kernel_initializer=glorot_uniform(seed=0))(X)
+    X = Conv2D(F3, (1, 1), strides=(1,1), padding="valid", name=conv_name_base + "2c", kernel_initializer=glorot_uniform())(X)
     X = BatchNormalization(axis=3, name=bn_name_base + "2c")(X)
 
     # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)
@@ -119,23 +119,23 @@ def convolutional_block(X, f, filters, stage, block, s = 2):
 
     ##### MAIN PATH #####
     # First component of main path 
-    X = Conv2D(F1, (1, 1), strides = (s,s), padding="valid", name = conv_name_base + "2a", kernel_initializer = glorot_uniform(seed=0))(X)
+    X = Conv2D(F1, (1, 1), strides = (s,s), padding="valid", name = conv_name_base + "2a", kernel_initializer = glorot_uniform())(X)
     X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
     X = Activation('relu')(X)
     
     ### START CODE HERE ###
 
     # Second component of main path (≈3 lines)
-    X = Conv2D(F2, (f, f), strides=(1, 1), padding="same", name=conv_name_base + "2b", kernel_initializer=glorot_uniform(seed=0))(X)
+    X = Conv2D(F2, (f, f), strides=(1, 1), padding="same", name=conv_name_base + "2b", kernel_initializer=glorot_uniform())(X)
     X = BatchNormalization(axis=3, name=bn_name_base + "2b")(X)
     X = Activation("relu")(X)
 
     # Third component of main path (≈2 lines)
-    X = Conv2D(F3, (1, 1), strides=(1, 1), padding="valid", name=conv_name_base + "2c", kernel_initializer=glorot_uniform(seed=0))(X)
+    X = Conv2D(F3, (1, 1), strides=(1, 1), padding="valid", name=conv_name_base + "2c", kernel_initializer=glorot_uniform())(X)
     X = BatchNormalization(axis=3, name=bn_name_base+"2c")(X)
 
     ##### SHORTCUT PATH #### (≈2 lines)
-    X_shortcut = Conv2D(F3, (1, 1), strides=(s, s), padding="valid", name=conv_name_base + "1", kernel_initializer=glorot_uniform(seed=0))(X_shortcut)
+    X_shortcut = Conv2D(F3, (1, 1), strides=(s, s), padding="valid", name=conv_name_base + "1", kernel_initializer=glorot_uniform())(X_shortcut)
     X_shortcut = BatchNormalization(axis=3, name=bn_name_base + "1")(X_shortcut)
 
     # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)
@@ -173,7 +173,7 @@ def ResNet50(input_shape = (299, 299, 3), classes = 1):
     X = ZeroPadding2D((3, 3))(X)
     
     # Stage 1
-    X = Conv2D(64, (7, 7), strides = (2, 2), name = 'conv1', kernel_initializer = glorot_uniform(seed=0))(X)
+    X = Conv2D(64, (7, 7), strides = (2, 2), name = 'conv1', kernel_initializer = glorot_uniform())(X)
     X = BatchNormalization(axis = 3, name = 'bn_conv1')(X)
     X = Activation('relu')(X)
     X = MaxPooling2D((3, 3), strides=(2, 2))(X)
@@ -211,7 +211,7 @@ def ResNet50(input_shape = (299, 299, 3), classes = 1):
 
     # output layer
     X = Flatten()(X)
-    X = Dense(classes, activation='sigmoid', name='fc' + str(classes), kernel_initializer = glorot_uniform(seed=0))(X)
+    X = Dense(classes, activation='sigmoid', name='fc' + str(classes), kernel_initializer = glorot_uniform())(X)
     
     
     # Create model
@@ -227,7 +227,7 @@ def main():
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 
-    X_train_orig, X_test_orig, Y_train_orig, Y_test_orig = ld.load_data(500, 500)
+    X_train_orig, X_test_orig, Y_train_orig, Y_test_orig = ld.load_data(max_pos=100, max_neg=100)
 
     # Normalize image vectors
     X_train = X_train_orig/255.
@@ -265,7 +265,7 @@ def main():
     print("Model and weights saved.")
 
     # print summary
-    model.summary()
+    # model.summary()
 
 
 if __name__ == '__main__':
